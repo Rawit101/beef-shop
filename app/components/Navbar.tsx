@@ -23,6 +23,7 @@ export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false)
     const [user, setUser] = useState<{ email?: string; full_name?: string; role?: string } | null>(null)
     const [cartCount, setCartCount] = useState(0)
+    const [wishlistCount, setWishlistCount] = useState(0)
     const [showUserMenu, setShowUserMenu] = useState(false)
     const [showLangMenu, setShowLangMenu] = useState(false)
     const langMenuRef = useRef<HTMLDivElement>(null)
@@ -45,11 +46,14 @@ export default function Navbar() {
 
             // Listen for cart updates from any component
             const handleCartUpdate = () => { refreshCartCount() }
+            const handleWishlistUpdate = () => { refreshWishlistCount() }
             window.addEventListener("cart-updated", handleCartUpdate)
+            window.addEventListener("wishlist-updated", handleWishlistUpdate)
 
             return () => {
                 subscription.unsubscribe()
                 window.removeEventListener("cart-updated", handleCartUpdate)
+                window.removeEventListener("wishlist-updated", handleWishlistUpdate)
             }
         }
     }, [])
@@ -139,6 +143,17 @@ export default function Navbar() {
         }
     }
 
+    const refreshWishlistCount = async () => {
+        const { data: { user: authUser } } = await supabase.auth.getUser()
+        if (authUser) {
+            const { count } = await supabase
+                .from("wishlists")
+                .select("id", { count: "exact" })
+                .eq("user_id", authUser.id)
+            setWishlistCount(count || 0)
+        }
+    }
+
     const checkUser = async () => {
         const { data: { user: authUser } } = await supabase.auth.getUser()
         if (authUser) {
@@ -158,9 +173,16 @@ export default function Navbar() {
                 .select("id", { count: "exact" })
                 .eq("user_id", authUser.id)
             setCartCount(count || 0)
+            // Get wishlist count
+            const { count: wCount } = await supabase
+                .from("wishlists")
+                .select("id", { count: "exact" })
+                .eq("user_id", authUser.id)
+            setWishlistCount(wCount || 0)
         } else {
             setUser(null)
             setCartCount(0)
+            setWishlistCount(0)
         }
     }
 
@@ -240,8 +262,8 @@ export default function Navbar() {
                                                         setShowLangMenu(false)
                                                     }}
                                                     className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-left transition-all duration-200 ${isActive
-                                                            ? "bg-primary/10 text-primary ring-1 ring-primary/20"
-                                                            : "text-charcoal hover:bg-gray-50"
+                                                        ? "bg-primary/10 text-primary ring-1 ring-primary/20"
+                                                        : "text-charcoal hover:bg-gray-50"
                                                         }`}
                                                 >
                                                     <div className={`w-9 h-9 rounded-full flex items-center justify-center text-lg flex-shrink-0 ${isActive ? "bg-primary/20 shadow-sm" : "bg-gray-100"
@@ -271,6 +293,14 @@ export default function Navbar() {
                         >
                             <span className="material-icons">search</span>
                         </button>
+                        <Link href="/wishlist" className="relative text-charcoal hover:text-primary transition-colors">
+                            <span className="material-icons">favorite_border</span>
+                            {wishlistCount > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                                    {wishlistCount}
+                                </span>
+                            )}
+                        </Link>
                         <Link href="/checkout" className="relative text-charcoal hover:text-primary transition-colors">
                             <span className="material-icons">shopping_bag</span>
                             {cartCount > 0 && (
@@ -302,6 +332,20 @@ export default function Navbar() {
                                         >
                                             <span className="material-icons text-base text-primary">receipt_long</span>
                                             {t.navbar.myOrders}
+                                        </Link>
+                                        <Link
+                                            href="/profile?tab=addresses"
+                                            className="flex items-center gap-2 px-4 py-3 text-sm font-medium hover:bg-primary/5 transition-colors"
+                                            onClick={() => {
+                                                setShowUserMenu(false)
+                                                // Support client-side navigation if already on profile page
+                                                if (window.location.pathname === '/profile') {
+                                                    window.dispatchEvent(new CustomEvent('change-profile-tab', { detail: 'addresses' }))
+                                                }
+                                            }}
+                                        >
+                                            <span className="material-icons text-base text-primary">location_on</span>
+                                            {t.addresses?.title || "Saved Addresses"}
                                         </Link>
                                         <Link
                                             href="/order-tracking"

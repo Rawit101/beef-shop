@@ -50,6 +50,20 @@ export default function CheckoutPage() {
     const [city, setCity] = useState("")
     const [postcode, setPostcode] = useState("")
 
+    // Saved addresses
+    interface SavedAddress {
+        id: string
+        label: string
+        first_name: string
+        last_name: string
+        address: string
+        city: string
+        postcode: string
+        is_default: boolean
+    }
+    const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([])
+    const [selectedAddrId, setSelectedAddrId] = useState<string | null>(null)
+
     useEffect(() => {
         fetchCart()
     }, [])
@@ -83,7 +97,33 @@ export default function CheckoutPage() {
                 }))
             )
         }
+
+        // Load saved addresses
+        const { data: addrData } = await supabase
+            .from("saved_addresses")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("is_default", { ascending: false })
+            .order("created_at", { ascending: false })
+        if (addrData && addrData.length > 0) {
+            setSavedAddresses(addrData as SavedAddress[])
+            // Auto-select default address
+            const defaultAddr = addrData.find((a: SavedAddress) => a.is_default) || addrData[0]
+            if (defaultAddr) {
+                selectAddress(defaultAddr as SavedAddress)
+            }
+        }
+
         setLoading(false)
+    }
+
+    const selectAddress = (addr: SavedAddress) => {
+        setSelectedAddrId(addr.id)
+        setFirstName(addr.first_name)
+        setLastName(addr.last_name)
+        setAddress(addr.address)
+        setCity(addr.city)
+        setPostcode(addr.postcode)
     }
 
     const updateQty = async (id: string, delta: number) => {
@@ -403,6 +443,50 @@ export default function CheckoutPage() {
                                         </span>
                                         Shipping Address
                                     </h2>
+
+                                    {/* Saved Addresses Picker */}
+                                    {savedAddresses.length > 0 && (
+                                        <div className="mb-6">
+                                            <div className="flex flex-wrap gap-3">
+                                                {savedAddresses.map((addr) => (
+                                                    <button
+                                                        key={addr.id}
+                                                        onClick={() => selectAddress(addr)}
+                                                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border transition-all ${selectedAddrId === addr.id
+                                                                ? "border-primary bg-primary/5 text-primary ring-1 ring-primary/20"
+                                                                : "border-gray-200 hover:border-primary/30 text-gray-600"
+                                                            }`}
+                                                    >
+                                                        <span className="material-icons text-base">
+                                                            {selectedAddrId === addr.id ? "radio_button_checked" : "radio_button_unchecked"}
+                                                        </span>
+                                                        <span className="font-bold">{addr.label}</span>
+                                                        <span className="text-gray-400">• {addr.first_name} {addr.last_name}</span>
+                                                        {addr.is_default && (
+                                                            <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-bold">Default</span>
+                                                        )}
+                                                    </button>
+                                                ))}
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedAddrId(null)
+                                                        setFirstName("")
+                                                        setLastName("")
+                                                        setAddress("")
+                                                        setCity("")
+                                                        setPostcode("")
+                                                    }}
+                                                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border transition-all ${selectedAddrId === null
+                                                            ? "border-primary bg-primary/5 text-primary ring-1 ring-primary/20"
+                                                            : "border-gray-200 hover:border-primary/30 text-gray-600"
+                                                        }`}
+                                                >
+                                                    <span className="material-icons text-base">add</span>
+                                                    New Address
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="col-span-2 md:col-span-1">
                                             <label className="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
 import { useSearchParams, useRouter } from "next/navigation"
 import Navbar from "../components/Navbar"
@@ -100,7 +100,7 @@ const cutTypes = ["Ribeye", "Tenderloin", "Striploin", "Tomahawk"]
 const marblingScores = ["A3 (Moderate)", "A5 (Supreme)", "MB 4-5", "MB 8-9+"]
 const origins = ["Japanese Wagyu", "Australian Black Angus", "USDA Prime"]
 
-export default function ProductsPage() {
+function ProductsPageContent() {
     const { t } = useLanguage()
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -125,10 +125,55 @@ export default function ProductsPage() {
     const [mobileFilters, setMobileFilters] = useState(false)
     const [toast, setToast] = useState<string | null>(null)
     const [searchQuery, setSearchQuery] = useState(searchParam)
+    const [wishlistedIds, setWishlistedIds] = useState<Set<string>>(new Set())
 
     useEffect(() => {
-        if (isSupabaseConfigured()) fetchProducts()
+        if (isSupabaseConfigured()) {
+            fetchProducts()
+            loadWishlist()
+        }
     }, [])
+
+    const loadWishlist = async () => {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return
+        const { data } = await supabase
+            .from("wishlists")
+            .select("product_id")
+            .eq("user_id", user.id)
+        if (data) {
+            setWishlistedIds(new Set(data.map((w: { product_id: string }) => w.product_id)))
+        }
+    }
+
+    const toggleWishlist = async (productId: string, e: React.MouseEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (!isSupabaseConfigured()) {
+            setToast(t.wishlist.addedToast)
+            setTimeout(() => setToast(null), 2000)
+            return
+        }
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+            window.location.href = "/login"
+            return
+        }
+        if (!productId) return
+
+        const isWishlisted = wishlistedIds.has(productId)
+        if (isWishlisted) {
+            await supabase.from("wishlists").delete().eq("user_id", user.id).eq("product_id", productId)
+            setWishlistedIds(prev => { const next = new Set(prev); next.delete(productId); return next })
+            setToast(t.wishlist.removedToast)
+        } else {
+            await supabase.from("wishlists").insert({ user_id: user.id, product_id: productId })
+            setWishlistedIds(prev => new Set(prev).add(productId))
+            setToast(t.wishlist.addedToast)
+        }
+        setTimeout(() => setToast(null), 2000)
+        window.dispatchEvent(new Event("wishlist-updated"))
+    }
 
     useEffect(() => {
         setActiveCategory(catParam)
@@ -287,6 +332,19 @@ export default function ProductsPage() {
                     <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2.5 py-1 rounded uppercase tracking-wide">
                         {product.badge}
                     </div>
+                )}
+                {/* Wishlist heart button */}
+                {product.id && (
+                    <button
+                        onClick={(e) => toggleWishlist(product.id!, e)}
+                        className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-200 z-10"
+                        title={wishlistedIds.has(product.id) ? t.wishlist.removeFromWishlist : t.wishlist.addToWishlist}
+                    >
+                        <span className={`material-icons text-xl transition-colors ${wishlistedIds.has(product.id) ? "text-red-500" : "text-gray-400 hover:text-red-400"
+                            }`}>
+                            {wishlistedIds.has(product.id) ? "favorite" : "favorite_border"}
+                        </span>
+                    </button>
                 )}
             </div>
 
@@ -458,5 +516,17 @@ export default function ProductsPage() {
                 </div>
             )}
         </>
+    )
+}
+
+export default function ProductsPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <span className="material-icons animate-spin text-4xl text-primary">autorenew</span>
+            </div>
+        }>
+            <ProductsPageContent />
+        </Suspense>
     )
 }
