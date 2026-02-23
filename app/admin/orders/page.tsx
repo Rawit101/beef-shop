@@ -177,7 +177,7 @@ export default function AdminOrders() {
                                     </div>
                                     <div className="text-right">
                                         <p className="text-xl font-extrabold">
-                                            ${Number(order.total).toFixed(2)}
+                                            ฿{Number(order.total).toFixed(2)}
                                         </p>
                                         <p className="text-[10px] text-gray-400 uppercase tracking-wider">
                                             {order.delivery_method === "express"
@@ -202,7 +202,7 @@ export default function AdminOrders() {
                                                     Subtotal
                                                 </p>
                                                 <p className="font-semibold">
-                                                    ${Number(order.subtotal).toFixed(2)}
+                                                    ฿{Number(order.subtotal).toFixed(2)}
                                                 </p>
                                             </div>
                                             <div>
@@ -210,7 +210,7 @@ export default function AdminOrders() {
                                                     Shipping
                                                 </p>
                                                 <p className="font-semibold">
-                                                    ${Number(order.shipping).toFixed(2)}
+                                                    ฿{Number(order.shipping).toFixed(2)}
                                                 </p>
                                             </div>
                                             <div>
@@ -218,7 +218,7 @@ export default function AdminOrders() {
                                                     Tax
                                                 </p>
                                                 <p className="font-semibold">
-                                                    ${Number(order.tax).toFixed(2)}
+                                                    ฿{Number(order.tax).toFixed(2)}
                                                 </p>
                                             </div>
                                             <div>
@@ -269,8 +269,8 @@ export default function AdminOrders() {
                                                     onClick={() => updateStatus(order.id, s)}
                                                     disabled={order.status === s}
                                                     className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg transition-all ${order.status === s
-                                                            ? STATUS_COLORS[s] + " cursor-default"
-                                                            : "bg-gray-100 text-gray-400 hover:bg-gray-200"
+                                                        ? STATUS_COLORS[s] + " cursor-default"
+                                                        : "bg-gray-100 text-gray-400 hover:bg-gray-200"
                                                         }`}
                                                 >
                                                     {s}

@@ -49,6 +49,15 @@ export default function Hero() {
                     </div>
                 </div>
             </div>
+
+            {/* Scroll Down Indicator */}
+            <div
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-80 animate-bounce cursor-pointer hover:opacity-100 transition-opacity"
+                onClick={() => window.scrollTo({ top: window.innerHeight * 0.85, behavior: 'smooth' })}
+            >
+                <span className="text-white text-[10px] font-bold tracking-[0.2em] uppercase bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm">Scroll Down</span>
+                <span className="material-icons text-white drop-shadow-lg">keyboard_arrow_down</span>
+            </div>
         </section>
     )
 }

@@ -82,7 +82,7 @@ export default function AdminDashboard() {
         },
         {
             label: "Revenue",
-            value: `$${stats.totalRevenue.toFixed(2)}`,
+            value: `฿${stats.totalRevenue.toFixed(2)}`,
             icon: "payments",
             color: "bg-primary/10 text-primary",
         },

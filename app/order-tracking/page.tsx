@@ -352,7 +352,7 @@ export default function OrderTrackingPage() {
                                                     <p className="text-xs text-gray-400">Qty: {item.quantity}</p>
                                                 </div>
                                                 <p className="font-bold text-sm text-primary">
-                                                    ${(Number(item.unit_price) * item.quantity).toFixed(2)}
+                                                    ฿{(Number(item.unit_price) * item.quantity).toFixed(2)}
                                                 </p>
                                             </div>
                                         ))}
@@ -360,7 +360,7 @@ export default function OrderTrackingPage() {
 
                                     <div className="border-t border-gray-100 pt-4 flex justify-between items-center mb-6">
                                         <span className="text-sm font-bold">Total</span>
-                                        <span className="text-xl font-extrabold text-primary">${Number(order.total).toFixed(2)}</span>
+                                        <span className="text-xl font-extrabold text-primary">฿{Number(order.total).toFixed(2)}</span>
                                     </div>
 
                                     <button className="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-3 text-xs font-bold uppercase tracking-wider hover:bg-gray-50 transition-colors">

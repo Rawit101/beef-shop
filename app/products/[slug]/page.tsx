@@ -461,11 +461,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                         <div className="mb-8">
                             <div className="flex items-baseline gap-2">
                                 <span className="text-3xl font-bold">
-                                    ${(product.price * weights[selectedWeight].multiplier).toFixed(2)}
+                                    ฿{(product.price * weights[selectedWeight].multiplier).toFixed(2)}
                                 </span>
                                 {product.old_price && (
                                     <span className="text-zinc-500 line-through text-lg">
-                                        ${(product.old_price * weights[selectedWeight].multiplier).toFixed(2)}
+                                        ฿{(product.old_price * weights[selectedWeight].multiplier).toFixed(2)}
                                     </span>
                                 )}
                             </div>
@@ -673,7 +673,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                             </span>
                             <div className="flex items-baseline gap-2">
                                 <span className="text-2xl font-bold">
-                                    ${(product.price * weights[selectedWeight].multiplier * quantity).toFixed(2)}
+                                    ฿{(product.price * weights[selectedWeight].multiplier * quantity).toFixed(2)}
                                 </span>
                                 <span className="text-[10px] text-zinc-400 font-medium">
                                     Excluding taxes

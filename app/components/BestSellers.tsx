@@ -174,7 +174,7 @@ export default function BestSellers() {
                                 </p>
                                 <div className="flex items-center justify-between">
                                     <span className="text-2xl font-extrabold text-primary">
-                                        ${p.price.toFixed(2)}
+                                        ฿{p.price.toFixed(2)}
                                     </span>
                                     <button
                                         onClick={(e) => addToCart(p, e)}

@@ -222,7 +222,7 @@ export default function WishlistPage() {
                                                     <span>{product.portion}</span>
                                                 </div>
                                                 <span className="text-xl font-extrabold">
-                                                    ${product.price.toFixed(2)}
+                                                    ฿{product.price.toFixed(2)}
                                                 </span>
                                             </div>
 

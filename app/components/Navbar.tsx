@@ -523,7 +523,7 @@ export default function Navbar() {
                                                 </p>
                                             </div>
                                             <span className="text-base font-extrabold text-primary">
-                                                ${product.price.toFixed(2)}
+                                                ฿{product.price.toFixed(2)}
                                             </span>
                                         </Link>
                                     ))}

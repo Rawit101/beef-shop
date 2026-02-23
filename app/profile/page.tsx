@@ -278,8 +278,8 @@ export default function ProfilePage() {
                         <button
                             onClick={() => setActiveTab("orders")}
                             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${activeTab === "orders"
-                                    ? "bg-primary text-white shadow-lg shadow-primary/20"
-                                    : "bg-white border border-gray-200 text-gray-600 hover:border-primary/40 hover:text-primary"
+                                ? "bg-primary text-white shadow-lg shadow-primary/20"
+                                : "bg-white border border-gray-200 text-gray-600 hover:border-primary/40 hover:text-primary"
                                 }`}
                         >
                             <span className="material-icons text-base">receipt_long</span>
@@ -288,8 +288,8 @@ export default function ProfilePage() {
                         <button
                             onClick={() => setActiveTab("addresses")}
                             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${activeTab === "addresses"
-                                    ? "bg-primary text-white shadow-lg shadow-primary/20"
-                                    : "bg-white border border-gray-200 text-gray-600 hover:border-primary/40 hover:text-primary"
+                                ? "bg-primary text-white shadow-lg shadow-primary/20"
+                                : "bg-white border border-gray-200 text-gray-600 hover:border-primary/40 hover:text-primary"
                                 }`}
                         >
                             <span className="material-icons text-base">location_on</span>
@@ -309,7 +309,7 @@ export default function ProfilePage() {
                                 <div className="bg-white rounded-2xl border border-gray-100 p-5">
                                     <p className="text-[10px] font-bold tracking-[0.15em] text-gray-400 uppercase mb-1">Total Spent</p>
                                     <p className="text-2xl font-extrabold">
-                                        ${orders.reduce((s, o) => s + Number(o.total), 0).toFixed(2)}
+                                        ฿{orders.reduce((s, o) => s + Number(o.total), 0).toFixed(2)}
                                     </p>
                                 </div>
                                 <div className="bg-white rounded-2xl border border-gray-100 p-5">
@@ -378,7 +378,7 @@ export default function ProfilePage() {
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-4">
-                                                        <p className="text-lg font-extrabold">${Number(order.total).toFixed(2)}</p>
+                                                        <p className="text-lg font-extrabold">฿{Number(order.total).toFixed(2)}</p>
                                                         <span className={`material-icons text-gray-400 transition-transform ${isExpanded ? "rotate-180" : ""}`}>expand_more</span>
                                                     </div>
                                                 </button>
@@ -402,27 +402,27 @@ export default function ProfilePage() {
                                                                         <p className="font-bold text-sm truncate">{item.product_name}</p>
                                                                         <p className="text-xs text-gray-400">{item.products?.portion || "—"} × {item.quantity}</p>
                                                                     </div>
-                                                                    <p className="font-bold text-sm text-primary">${(Number(item.unit_price) * item.quantity).toFixed(2)}</p>
+                                                                    <p className="font-bold text-sm text-primary">฿{(Number(item.unit_price) * item.quantity).toFixed(2)}</p>
                                                                 </div>
                                                             ))}
                                                         </div>
 
-                                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-xl mb-4">
-                                                            <div>
-                                                                <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-0.5">Subtotal</p>
-                                                                <p className="font-semibold text-sm">${Number(order.subtotal).toFixed(2)}</p>
+                                                        <div className="grid grid-cols-1 gap-y-2 p-4 bg-gray-50 rounded-xl mb-4">
+                                                            <div className="flex justify-between items-center text-gray-500">
+                                                                <p className="text-sm">Subtotal</p>
+                                                                <p className="font-semibold text-sm">฿{Number(order.subtotal).toFixed(2)}</p>
                                                             </div>
-                                                            <div>
-                                                                <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-0.5">Shipping</p>
-                                                                <p className="font-semibold text-sm">${Number(order.shipping).toFixed(2)}</p>
+                                                            <div className="flex justify-between items-center text-gray-500">
+                                                                <p className="text-sm">Shipping</p>
+                                                                <p className="font-semibold text-sm">฿{Number(order.shipping).toFixed(2)}</p>
                                                             </div>
-                                                            <div>
-                                                                <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-0.5">Tax</p>
-                                                                <p className="font-semibold text-sm">${Number(order.tax).toFixed(2)}</p>
+                                                            <div className="flex justify-between items-center text-gray-500">
+                                                                <p className="text-sm">Taxes</p>
+                                                                <p className="font-semibold text-sm">฿{Number(order.tax).toFixed(2)}</p>
                                                             </div>
-                                                            <div>
-                                                                <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-0.5">Total</p>
-                                                                <p className="font-bold text-primary">${Number(order.total).toFixed(2)}</p>
+                                                            <div className="flex justify-between items-center pt-3 border-t">
+                                                                <p className="font-bold text-gray-600">Total</p>
+                                                                <p className="font-bold text-primary">฿{Number(order.total).toFixed(2)}</p>
                                                             </div>
                                                         </div>
 

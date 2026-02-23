@@ -247,7 +247,7 @@ export default function AdminProducts() {
                                         {p.category}
                                     </td>
                                     <td className="px-6 py-4 font-bold text-sm">
-                                        ${p.price.toFixed(2)}
+                                        ฿{p.price.toFixed(2)}
                                     </td>
                                     <td className="px-6 py-4 text-sm">
                                         <span

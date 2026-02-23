@@ -27,72 +27,66 @@ const fallbackProducts: Product[] = [
         slug: "miyazaki-wagyu-ribeye",
         origin: "Japanese Kyushu Origin",
         portion: "250g Portions",
-        price: 129.0,
+        price: 3990.0,
         badge: "A5 GRADE",
         mb_score: true,
         category: "wagyu",
-        image_url:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuCw7AOxqSjAbH5XblTGWMl0ao-MtKn0rJbnecoasVtBVUmwOvvL8csVlSdWIhniO3LRXHVcrjOs3NTQK1LQFzLj8EEGOA8yygd_9-IW4NSc7vJOodMK40N9bAejwTQc3t3kMWtDw5rs2ItKFE_h_orYR4MOK96jbqVlT4BTtuuJ_LlesUt7rLLRe7sBpWRmMtlB-uxTn0xkwYcDc9e6-8cwvqVc7ztWHl5jgG-SUBALfHnIL5E7d2b2eg3p_eJEWQL-7sdo7CEvK9HZ",
+        image_url: "...",
     },
     {
         name: "Black Angus Striploin",
         slug: "black-angus-striploin",
         origin: "Australian Grain-Fed",
         portion: "300g Portions",
-        price: 65.0,
+        price: 1690.0,
         badge: "BESTSELLER",
         mb_score: true,
         category: "steak",
-        image_url:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuDgqSP0xVg44XxN29N_ZKnepqIMraw3cAuW-hcGSxl2C4GhzliWWT8h18BPEe-Pi6IxU5rUCTbfwkGgRNMVbLRbJ6wi0l6cr8AJlGGkawSx6a3DigTq_ezy7Xi0_JogGy9toMqTquYuNSqMmrWD_JM_UAeGJsCcB06kJ3MnY7SUIfQ2ZmkCrAemQDXuqrKSa8pliRvRhIRl5YNzPkLCGcHzs_oRFoz0KSzGDsJqKNuyfimWTCODBgyggtCveSKzBSguXwPTAcd-Z10Q",
+        image_url: "...",
     },
     {
         name: "Chateaubriand Tenderloin",
         slug: "chateaubriand-tenderloin",
         origin: "Center Cut Fillet",
         portion: "200g Fillet",
-        price: 89.0,
+        price: 2490.0,
         badge: "RARE ORIGIN",
         mb_score: true,
         category: "steak",
-        image_url:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuBWHprhyjQ2lx8q6g55KwSOYw21agSWeKiS-j-zlaLptHU9deSn2wbPWF8g2XifpaIogiXlOW6PEU1JaRYuCkYIwN34JSWyxdEmEMbk3chw_5R4UfSZYva2zC_Z-5XKj06ZWMZGw2OBevoIYrfzUKCmMlR-WbMsr9WRk8sKPu1rrT0bMbNUYLlEldRHL9ERTgPGr4xWF4UtakhqJWWwPhdv3ks6MnG5JgHLPgcAsQ9EAX1puobSE4d4IprnzmlR7DgFZT6IEr792iyt",
+        image_url: "...",
     },
     {
         name: "Grand Tomahawk Steak",
         slug: "grand-tomahawk-steak",
         origin: "Bone-In Long Rib",
         portion: "1.2kg Single",
-        price: 145.0,
+        price: 4290.0,
         badge: "",
         mb_score: true,
         category: "steak",
-        image_url:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuAxaATTMLVvVmY16Y3ExdS2wif3DcfIfbEG_OooLbwAVvVBt28zuRqQcSEMjNhEDA98xAM9fYFCEZjUA-zBmsH_pN7pvBBHgFGIcEF_qYXJWL9O1DmdNg9pPd-BCAPvJUqBhLfyOcPVDAQ9H6SOIg71tfJzDyOK4FkXy6dc2VDl80-38pXqBDQu0AFbA3q8yGsoBxL005Wyi-68vpkLWu4w22gIJBUiXe7LEnJpO9A0q9JhAb48HKDY671b1CZpJm_i4k8nf_7fuDcN",
+        image_url: "...",
     },
     {
         name: "Kobe Yakiniku Slices",
         slug: "kobe-yakiniku-slices",
         origin: "Japanese Hybrid",
         portion: "150g Box",
-        price: 78.0,
+        price: 2190.0,
         badge: "",
         mb_score: true,
         category: "shabu",
-        image_url:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuB-d-4Mp4DqOQtgX_Q5siyDg1OFypPGJlLtVZt5Txzrox79bqp0V7RuVR_Wmt_YvIWZ5EOaqhqiQtoTLAy1sP4Ei5TYMCe_LkgxWJRMqmpCPhP3eyOvTYJ0mD_NRuXztF5a_66b4-R_A5NnvCe9owj73xEL8L-JmUr7uzkR54rRqZWNjUY_nUwDgfoQrpISq8XsywXhEXfev_ddY0RNkUF4zMicAfOk_qNyN93eb4k706hO6C_OMEl9bcP-N2fBDPNuS93vfkn4UVeZ",
+        image_url: "...",
     },
     {
         name: "Aged Porterhouse",
         slug: "aged-porterhouse",
         origin: "Premium USDA Choice",
         portion: "800g Cut",
-        price: 110.0,
+        price: 3290.0,
         badge: "45-DAY AGED",
         mb_score: true,
         category: "steak",
-        image_url:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuDjfUNXHYPXBDemM4g0pCR2HlJBrc13IPNIZv5NnppeTu0HPW0-NYsATQUpwcjosCP4wDd27zIND36R3Tra5ohmSGmRaiwfNdxelpY462E-6w4bYaXB0uORMFEbFnLUC1LtkVTorquROwLhCS30fGLGIv2y-Slll0ml3dU0rCOjetK2-xpZQ5Fm7SYWs4IMdCG_BrSXi85GO_jopASUX80tHZ82IEtV23g2VKh-OxPF6PUGQ4Re20W0VMCB5ErLGs2aRyHlMNE60JSn",
+        image_url: "...",
     },
 ]
 
@@ -372,7 +366,7 @@ function ProductsPageContent() {
                         </span>
                     </div>
                     <span className="text-xl font-extrabold">
-                        ${product.price.toFixed(2)}
+                        ฿{product.price.toFixed(2)}
                     </span>
                 </div>
 
