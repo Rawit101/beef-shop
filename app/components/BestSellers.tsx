@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { supabase, isSupabaseConfigured } from "../../lib/supabaseClient"
+import { useLanguage } from "../../lib/i18n"
 
 interface Product {
     id: string
@@ -68,6 +69,7 @@ const fallbackProducts: Product[] = [
 ]
 
 export default function BestSellers() {
+    const { t } = useLanguage()
     const [products, setProducts] = useState<Product[]>(fallbackProducts)
     const [adding, setAdding] = useState<string | null>(null)
     const [toast, setToast] = useState<string | null>(null)
@@ -136,9 +138,9 @@ export default function BestSellers() {
                 {/* Header */}
                 <div className="text-center mb-16">
                     <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-4">
-                        Chef&apos;s Recommendations
+                        {t.bestSellers.sectionLabel}
                     </h2>
-                    <p className="text-4xl font-extrabold">Our Best Sellers</p>
+                    <p className="text-4xl font-extrabold">{t.bestSellers.sectionTitle}</p>
                 </div>
 
                 {/* Product Grid */}

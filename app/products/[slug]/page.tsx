@@ -4,6 +4,7 @@ import { useState, useEffect, use } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Navbar from "../../components/Navbar"
+import { useLanguage } from "../../../lib/i18n"
 import { supabase, isSupabaseConfigured } from "../../../lib/supabaseClient"
 
 interface Product {
@@ -121,6 +122,17 @@ const fallbackProducts: Product[] = [
     },
 ]
 
+export default function ProductDetailPage() {
+    const { t } = useLanguage()
+    const [selectedImage, setSelectedImage] = useState(0)
+    const [selectedWeight, setSelectedWeight] = useState(0)
+    const [selectedThickness, setSelectedThickness] = useState(1)
+    const [quantity, setQuantity] = useState(1)
+
+    const weights = [
+        { label: "200g", sub: t.productDetail.singleServing },
+        { label: "400g", sub: t.productDetail.duoPortion },
+        { label: "600g", sub: t.productDetail.largeCut },
 // Mockup doneness guide data
 const doneness = [
     {
@@ -187,6 +199,17 @@ function getWeightOptions(portion: string) {
     ]
 }
 
+    const thicknesses = [
+        { label: t.productDetail.standard, checked: false },
+        { label: t.productDetail.thickCut, checked: true },
+    ]
+
+    const doneness = [
+        { name: t.productDetail.rare, temp: t.productDetail.rareTemp, desc: t.productDetail.rareDesc, gradient: "from-red-900 to-red-800", recommended: false },
+        { name: t.productDetail.medRare, temp: t.productDetail.medRareTemp, desc: t.productDetail.medRareDesc, gradient: "from-red-800 to-red-600", recommended: true },
+        { name: t.productDetail.medium, temp: t.productDetail.mediumTemp, desc: t.productDetail.mediumDesc, gradient: "from-red-600 to-orange-800", recommended: false },
+        { name: t.productDetail.medWell, temp: t.productDetail.medWellTemp, desc: t.productDetail.medWellDesc, gradient: "from-orange-800 to-amber-900", recommended: false },
+        { name: t.productDetail.wellDone, temp: t.productDetail.wellDoneTemp, desc: t.productDetail.wellDoneDesc, gradient: "bg-zinc-950", recommended: false },
 const thicknesses = [
     { label: 'Standard (0.75")', checked: false },
     { label: 'Thick Cut (1.25")', checked: true },
@@ -380,13 +403,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 {/* Breadcrumb */}
                 <nav className="flex mb-8 text-xs font-medium uppercase tracking-widest text-zinc-500">
                     <Link href="/" className="hover:text-primary transition-colors">
-                        Home
+                        {t.productDetail.home}
                     </Link>
                     <span className="mx-2">/</span>
                     <Link
                         href={`/products${product.category ? `?cat=${product.category}` : ""}`}
                         className="hover:text-primary transition-colors"
                     >
+                        {t.productDetail.wagyu}
+                    </Link>
+                    <span className="mx-2">/</span>
+                    <span className="text-zinc-900">{t.productDetail.productName}</span>
                         {categoryLabel}
                     </Link>
                     <span className="mx-2">/</span>
@@ -404,6 +431,32 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                                 src={product.image_url}
                                 alt={product.name}
                             />
+                            <div className="absolute top-4 left-4">
+                                <span className="bg-primary text-white px-3 py-1 text-xs font-bold tracking-widest rounded uppercase">
+                                    {t.productDetail.certifiedA5}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Thumbnails */}
+                        <div className="grid grid-cols-4 gap-4">
+                            {galleryImages.slice(1).map((img, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setSelectedImage(idx + 1)}
+                                    className={`aspect-square rounded-lg overflow-hidden transition-opacity ${selectedImage === idx + 1
+                                        ? "border-2 border-primary opacity-100"
+                                        : "border border-zinc-200 opacity-60 hover:opacity-100"
+                                        }`}
+                                >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        className="w-full h-full object-cover"
+                                        src={img.src}
+                                        alt={img.alt}
+                                    />
+                                </button>
+                            ))}
                             {product.badge && (
                                 <div className="absolute top-4 left-4">
                                     <span className="bg-primary text-white px-3 py-1 text-xs font-bold tracking-widest rounded uppercase">
@@ -418,6 +471,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                     <div className="lg:col-span-5 flex flex-col">
                         <div className="mb-2">
                             <span className="text-sm font-semibold text-primary tracking-widest uppercase">
+                                {t.productDetail.origin}
+                            </span>
+                            <h1 className="text-4xl md:text-5xl font-bold mt-2 leading-tight tracking-tight">
+                                {t.productDetail.productName}
                                 {product.origin}
                             </span>
                             <h1 className="text-4xl md:text-5xl font-bold mt-2 leading-tight tracking-tight">
@@ -435,6 +492,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                                 ))}
                             </div>
                             <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                                {t.productDetail.reviews}
                                 ({reviewCount} Reviews)
                             </span>
                         </div>
@@ -452,7 +510,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                                 )}
                             </div>
                             <p className="text-sm text-zinc-500 mt-1">
-                                Free overnight shipping on orders over $250
+                                {t.productDetail.freeShipping}
                             </p>
                         </div>
 
@@ -462,10 +520,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                             <div>
                                 <div className="flex justify-between items-end mb-4">
                                     <label className="text-xs font-bold uppercase tracking-widest">
-                                        Select Weight
+                                        {t.productDetail.selectWeight}
                                     </label>
                                     <span className="text-xs text-primary font-medium cursor-pointer">
-                                        Size Guide
+                                        {t.productDetail.sizeGuide}
                                     </span>
                                 </div>
                                 <div className="grid grid-cols-3 gap-3">
@@ -492,19 +550,19 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                             {/* Thickness Selector */}
                             <div>
                                 <label className="block text-xs font-bold uppercase tracking-widest mb-4">
-                                    Custom Thickness
+                                    {t.productDetail.customThickness}
                                 </label>
                                 <div className="grid grid-cols-2 gap-3">
-                                    {thicknesses.map((t, idx) => (
+                                    {thicknesses.map((th, idx) => (
                                         <button
-                                            key={t.label}
+                                            key={th.label}
                                             onClick={() => setSelectedThickness(idx)}
                                             className={`py-3 rounded-lg flex items-center justify-center gap-2 ${selectedThickness === idx
                                                 ? "border-2 border-primary bg-primary/5"
                                                 : "border-2 border-zinc-200 hover:border-zinc-400"
                                                 }`}
                                         >
-                                            <span className="text-sm font-medium">{t.label}</span>
+                                            <span className="text-sm font-medium">{th.label}</span>
                                             {selectedThickness === idx && (
                                                 <span className="material-icons text-primary text-sm">
                                                     check_circle
@@ -518,6 +576,28 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
                         {/* Specs Grid */}
                         <div className="mt-10 pt-10 border-t border-zinc-200 grid grid-cols-3 gap-4">
+                            <div className="text-center">
+                                <span className="block text-[10px] text-zinc-500 font-bold uppercase tracking-tighter mb-1">
+                                    {t.productDetail.breed}
+                                </span>
+                                <span className="block text-xs font-semibold">
+                                    {t.productDetail.breedValue}
+                                </span>
+                            </div>
+                            <div className="text-center border-x border-zinc-200">
+                                <span className="block text-[10px] text-zinc-500 font-bold uppercase tracking-tighter mb-1">
+                                    {t.productDetail.feeding}
+                                </span>
+                                <span className="block text-xs font-semibold">{t.productDetail.feedingValue}</span>
+                            </div>
+                            <div className="text-center">
+                                <span className="block text-[10px] text-zinc-500 font-bold uppercase tracking-tighter mb-1">
+                                    {t.productDetail.aging}
+                                </span>
+                                <span className="block text-xs font-semibold">
+                                    {t.productDetail.agingValue}
+                                </span>
+                            </div>
                             {specs.map((s, idx) => (
                                 <div
                                     key={s.label}
@@ -539,9 +619,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 <section className="mt-20 py-16 border-t border-zinc-200">
                     <div className="max-w-3xl mx-auto text-center mb-12">
                         <h2 className="text-3xl font-bold mb-4 tracking-tight uppercase italic">
-                            The Perfect Sear
+                            {t.productDetail.perfectSear}
                         </h2>
                         <p className="text-zinc-500 leading-relaxed">
+                            {t.productDetail.perfectSearDesc}
                             Premium beef fat melts at room temperature. We recommend a quick sear on
                             high heat in a cast-iron skillet to preserve the exquisite
                             marbling and flavor.
@@ -566,7 +647,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                                     <h3 className="font-bold text-sm uppercase">{d.name}</h3>
                                     {d.recommended && (
                                         <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full font-bold">
-                                            RECOMMENDED
+                                            {t.productDetail.recommended}
                                         </span>
                                     )}
                                 </div>
@@ -583,10 +664,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-16 py-16 border-t border-zinc-200">
                     <div>
                         <h2 className="text-2xl font-bold mb-6 tracking-tight">
-                            THE PINNACLE OF BEEF
+                            {t.productDetail.pinnacleTitle}
                         </h2>
                         <div className="space-y-4 text-zinc-600 leading-relaxed">
                             <p>
+                                {t.productDetail.pinnacleP1}
+                            </p>
+                            <p>
+                                {t.productDetail.pinnacleP2}
                                 {product.description ||
                                     `Our ${product.name} represents exceptional quality sourced from the finest producers. Each cut is hand-selected for its outstanding flavor profile and premium texture.`}
                             </p>
@@ -602,6 +687,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                                     verified
                                 </span>
                                 <span className="text-sm font-medium">
+                                    {t.productDetail.feature1}
                                     Authenticity Certificate Included
                                 </span>
                             </li>
@@ -610,7 +696,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                                     ac_unit
                                 </span>
                                 <span className="text-sm font-medium">
-                                    Shipped in specialized cold-chain packaging
+                                    {t.productDetail.feature2}
                                 </span>
                             </li>
                             <li className="flex items-center gap-3">
@@ -618,7 +704,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                                     restaurant_menu
                                 </span>
                                 <span className="text-sm font-medium">
-                                    Portioned by master butchers in our local facility
+                                    {t.productDetail.feature3}
                                 </span>
                             </li>
                         </ul>
@@ -633,10 +719,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
                             <div className="text-white">
                                 <p className="text-3xl font-bold italic">
-                                    &quot;An unparalleled sensory experience.&quot;
+                                    {t.productDetail.quote}
                                 </p>
                                 <p className="text-sm mt-2 opacity-80">
-                                    — Chef Marcus V., Michelin Star Consultant
+                                    {t.productDetail.quoteAuthor}
                                 </p>
                             </div>
                         </div>
@@ -650,14 +736,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                     <div className="flex items-center justify-between">
                         <div className="hidden sm:flex flex-col">
                             <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
-                                Total Price
+                                {t.productDetail.totalPrice}
                             </span>
                             <div className="flex items-baseline gap-2">
                                 <span className="text-2xl font-bold">
                                     ${(product.price * quantity).toFixed(2)}
                                 </span>
                                 <span className="text-[10px] text-zinc-400 font-medium">
-                                    EXCLUDING TAXES
+                                    {t.productDetail.excludingTaxes}
                                 </span>
                             </div>
                         </div>
@@ -682,6 +768,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                             </div>
 
                             {/* CTA Button */}
+                            <button className="flex-1 sm:flex-none px-12 h-12 bg-primary hover:bg-primary/90 text-white font-bold text-sm uppercase tracking-widest transition-all rounded-lg flex items-center justify-center gap-2">
+                                <span>{t.productDetail.addToCartBtn}</span>
+                                <span className="material-icons text-lg">arrow_forward</span>
                             <button
                                 onClick={addToCart}
                                 disabled={product.stock <= 0}

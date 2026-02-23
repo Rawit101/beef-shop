@@ -13,6 +13,28 @@ body {
   font-family: "Work Sans", sans-serif;
 }
 
+/* ── Thai Language Font (Bai Jamjuree) ── */
+body.lang-th {
+  font-family: "Bai Jamjuree", "Work Sans", sans-serif;
+  letter-spacing: 0.01em;
+}
+
+/* Make prominent elements pop in Thai */
+body.lang-th h1,
+body.lang-th h2,
+body.lang-th h3,
+body.lang-th h4 {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+body.lang-th button,
+body.lang-th a.bg-primary,
+body.lang-th [class*="font-bold"],
+body.lang-th [class*="font-extrabold"] {
+  letter-spacing: 0.03em;
+}
+
 .hero-overlay {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
 }

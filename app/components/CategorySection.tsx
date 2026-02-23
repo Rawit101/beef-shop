@@ -1,44 +1,46 @@
-import Link from "next/link"
+"use client"
 
-const categories = [
+import Link from "next/link"
+import { useLanguage } from "../../lib/i18n"
+
+const categoryImages = [
     {
-        name: "Steak Cuts",
-        desc: "Ribeye, Striploin & More",
         catKey: "steak",
-        image:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuCp4A0Bzr7MATVN7sctuKaw23VBSOo-o0EV8X7p1ooGYhxzTUIA4D6ucVWIR4F8w0wyqSKoSSH_EwzlVwBeDHv02NAYV-UDUnpYWaNWCV0AyH66lC7hl7jL3sYgYnq4fBy_UX8p_D6ZpdX18NznWvGKspNgpan54U_mXQwB4VxiBrCPQxjCTFbEgZQy7ptgG-Eq9g9sOnq_WGvVSpB39T3l11_wvekmz3-CtYBE_oAQDOOFyDzu6-SaoXme3e9nxlToTxgacnvRtBJj",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCp4A0Bzr7MATVN7sctuKaw23VBSOo-o0EV8X7p1ooGYhxzTUIA4D6ucVWIR4F8w0wyqSKoSSH_EwzlVwBeDHv02NAYV-UDUnpYWaNWCV0AyH66lC7hl7jL3sYgYnq4fBy_UX8p_D6ZpdX18NznWvGKspNgpan54U_mXQwB4VxiBrCPQxjCTFbEgZQy7ptgG-Eq9g9sOnq_WGvVSpB39T3l11_wvekmz3-CtYBE_oAQDOOFyDzu6-SaoXme3e9nxlToTxgacnvRtBJj",
     },
     {
-        name: "Shabu & Sukiyaki",
-        desc: "Precision Sliced Delicacies",
         catKey: "shabu",
-        image:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuB-d-4Mp4DqOQtgX_Q5siyDg1OFypPGJlLtVZt5Txzrox79bqp0V7RuVR_Wmt_YvIWZ5EOaqhqiQtoTLAy1sP4Ei5TYMCe_LkgxWJRMqmpCPhP3eyOvTYJ0mD_NRuXztF5a_66b4-R_A5NnvCe9owj73xEL8L-JmUr7uzkR54rRqZWNjUY_nUwDgfoQrpISq8XsywXhEXfev_ddY0RNkUF4zMicAfOk_qNyN93eb4k706hO6C_OMEl9bcP-N2fBDPNuS93vfkn4UVeZ",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB-d-4Mp4DqOQtgX_Q5siyDg1OFypPGJlLtVZt5Txzrox79bqp0V7RuVR_Wmt_YvIWZ5EOaqhqiQtoTLAy1sP4Ei5TYMCe_LkgxWJRMqmpCPhP3eyOvTYJ0mD_NRuXztF5a_66b4-R_A5NnvCe9owj73xEL8L-JmUr7uzkR54rRqZWNjUY_nUwDgfoQrpISq8XsywXhEXfev_ddY0RNkUF4zMicAfOk_qNyN93eb4k706hO6C_OMEl9bcP-N2fBDPNuS93vfkn4UVeZ",
     },
     {
-        name: "Wagyu Reserve",
-        desc: "A5 Japanese & MS9+ Australian",
         catKey: "wagyu",
-        image:
-            "https://lh3.googleusercontent.com/aida-public/AB6AXuDjfUNXHYPXBDemM4g0pCR2HlJBrc13IPNIZv5NnppeTu0HPW0-NYsATQUpwcjosCP4wDd27zIND36R3Tra5ohmSGmRaiwfNdxelpY462E-6w4bYaXB0uORMFEbFnLUC1LtkVTorquROwLhCS30fGLGIv2y-Slll0ml3dU0rCOjetK2-xpZQ5Fm7SYWs4IMdCG_BrSXi85GO_jopASUX80tHZ82IEtV23g2VKh-OxPF6PUGQ4Re20W0VMCB5ErLGs2aRyHlMNE60JSn",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjfUNXHYPXBDemM4g0pCR2HlJBrc13IPNIZv5NnppeTu0HPW0-NYsATQUpwcjosCP4wDd27zIND36R3Tra5ohmSGmRaiwfNdxelpY462E-6w4bYaXB0uORMFEbFnLUC1LtkVTorquROwLhCS30fGLGIv2y-Slll0ml3dU0rCOjetK2-xpZQ5Fm7SYWs4IMdCG_BrSXi85GO_jopASUX80tHZ82IEtV23g2VKh-OxPF6PUGQ4Re20W0VMCB5ErLGs2aRyHlMNE60JSn",
     },
 ]
 
 export default function CategorySection() {
+    const { t } = useLanguage()
+
+    const categories = [
+        { name: t.categories.steak, desc: t.categories.steakDesc, ...categoryImages[0] },
+        { name: t.categories.shabu, desc: t.categories.shabuDesc, ...categoryImages[1] },
+        { name: t.categories.wagyu, desc: t.categories.wagyuDesc, ...categoryImages[2] },
+    ]
+
     return (
         <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-end mb-12">
                 <div>
                     <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-2">
-                        Curated Selections
+                        {t.categories.sectionLabel}
                     </h2>
-                    <p className="text-4xl font-extrabold">Shop by Category</p>
+                    <p className="text-4xl font-extrabold">{t.categories.sectionTitle}</p>
                 </div>
                 <Link
                     href="/products"
                     className="text-primary font-bold hover:underline flex items-center gap-1"
                 >
-                    View All Categories{" "}
+                    {t.categories.viewAll}{" "}
                     <span className="material-icons text-sm">north_east</span>
                 </Link>
             </div>
@@ -46,7 +48,7 @@ export default function CategorySection() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {categories.map((cat) => (
                     <Link
-                        key={cat.name}
+                        key={cat.catKey}
                         href={`/products?cat=${cat.catKey}`}
                         className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer block"
                     >

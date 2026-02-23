@@ -1,6 +1,11 @@
+"use client"
+
 import Link from "next/link"
+import { useLanguage } from "../../lib/i18n"
 
 export default function Footer() {
+    const { t } = useLanguage()
+
     return (
         <footer className="bg-charcoal text-white pt-24 pb-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,9 +21,7 @@ export default function Footer() {
                             </span>
                         </div>
                         <p className="text-gray-400 leading-relaxed text-sm mb-6">
-                            Providing the world&apos;s most discerning palates with the
-                            highest quality beef, handled with precision and delivered with
-                            care.
+                            {t.footer.brandDesc}
                         </p>
                         <div className="flex gap-4">
                             {[
@@ -40,15 +43,9 @@ export default function Footer() {
 
                     {/* Shop */}
                     <div>
-                        <h4 className="font-bold text-lg mb-8">Shop</h4>
+                        <h4 className="font-bold text-lg mb-8">{t.footer.shopTitle}</h4>
                         <ul className="space-y-4 text-gray-400 text-sm">
-                            {[
-                                "Beef Steaks",
-                                "Japanese Wagyu",
-                                "Australian Wagyu",
-                                "Special Bundles",
-                                "Sauces & Rubs",
-                            ].map((item) => (
+                            {t.footer.shopItems.map((item) => (
                                 <li key={item}>
                                     <Link
                                         href="#"
@@ -63,15 +60,9 @@ export default function Footer() {
 
                     {/* Service */}
                     <div>
-                        <h4 className="font-bold text-lg mb-8">Service</h4>
+                        <h4 className="font-bold text-lg mb-8">{t.footer.serviceTitle}</h4>
                         <ul className="space-y-4 text-gray-400 text-sm">
-                            {[
-                                "Delivery Info",
-                                "Cold Chain Tech",
-                                "Wholesale",
-                                "Track Order",
-                                "Returns Policy",
-                            ].map((item) => (
+                            {t.footer.serviceItems.map((item) => (
                                 <li key={item}>
                                     <Link
                                         href="#"
@@ -86,18 +77,18 @@ export default function Footer() {
 
                     {/* Newsletter */}
                     <div>
-                        <h4 className="font-bold text-lg mb-8">Newsletter</h4>
+                        <h4 className="font-bold text-lg mb-8">{t.footer.newsletterTitle}</h4>
                         <p className="text-sm text-gray-400 mb-6">
-                            Join our club for exclusive access to rare cuts and grilling tips.
+                            {t.footer.newsletterDesc}
                         </p>
                         <div className="relative">
                             <input
                                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-primary text-sm text-white placeholder:text-gray-500"
-                                placeholder="Your email address"
+                                placeholder={t.footer.emailPlaceholder}
                                 type="email"
                             />
                             <button className="absolute right-2 top-2 bg-primary px-4 py-1.5 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-colors">
-                                Join
+                                {t.footer.joinBtn}
                             </button>
                         </div>
                     </div>
@@ -106,10 +97,10 @@ export default function Footer() {
                 {/* Bottom bar */}
                 <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
                     <p className="text-gray-500 text-xs uppercase tracking-widest">
-                        © 2024 PrimeCut Luxury Butchery. All Rights Reserved.
+                        {t.footer.copyright}
                     </p>
                     <div className="flex items-center gap-8 text-xs text-gray-500 font-bold tracking-widest uppercase">
-                        {["Privacy", "Terms", "Cookies"].map((item) => (
+                        {[t.footer.privacy, t.footer.terms, t.footer.cookies].map((item) => (
                             <Link
                                 key={item}
                                 href="#"

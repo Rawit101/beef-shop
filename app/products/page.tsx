@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import { supabase, isSupabaseConfigured } from "../../lib/supabaseClient"
+import { useLanguage } from "../../lib/i18n"
 
 interface Product {
     name: string
@@ -20,14 +21,6 @@ interface Product {
     category?: string
 }
 
-const CATEGORIES = [
-    { key: "all", label: "All", icon: "grid_view" },
-    { key: "steak", label: "Steak Cuts", icon: "restaurant" },
-    { key: "wagyu", label: "Wagyu", icon: "star" },
-    { key: "bbq", label: "BBQ Bundles", icon: "outdoor_grill" },
-    { key: "shabu", label: "Shabu & Sukiyaki", icon: "ramen_dining" },
-]
-
 const fallbackProducts: Product[] = [
     {
         name: "Miyazaki Wagyu Ribeye",
@@ -37,6 +30,7 @@ const fallbackProducts: Product[] = [
         price: 129.0,
         badge: "A5 GRADE",
         mb_score: true,
+        category: "wagyu",
         image_url:
             "https://lh3.googleusercontent.com/aida-public/AB6AXuCw7AOxqSjAbH5XblTGWMl0ao-MtKn0rJbnecoasVtBVUmwOvvL8csVlSdWIhniO3LRXHVcrjOs3NTQK1LQFzLj8EEGOA8yygd_9-IW4NSc7vJOodMK40N9bAejwTQc3t3kMWtDw5rs2ItKFE_h_orYR4MOK96jbqVlT4BTtuuJ_LlesUt7rLLRe7sBpWRmMtlB-uxTn0xkwYcDc9e6-8cwvqVc7ztWHl5jgG-SUBALfHnIL5E7d2b2eg3p_eJEWQL-7sdo7CEvK9HZ",
     },
@@ -48,6 +42,7 @@ const fallbackProducts: Product[] = [
         price: 65.0,
         badge: "BESTSELLER",
         mb_score: true,
+        category: "steak",
         image_url:
             "https://lh3.googleusercontent.com/aida-public/AB6AXuDgqSP0xVg44XxN29N_ZKnepqIMraw3cAuW-hcGSxl2C4GhzliWWT8h18BPEe-Pi6IxU5rUCTbfwkGgRNMVbLRbJ6wi0l6cr8AJlGGkawSx6a3DigTq_ezy7Xi0_JogGy9toMqTquYuNSqMmrWD_JM_UAeGJsCcB06kJ3MnY7SUIfQ2ZmkCrAemQDXuqrKSa8pliRvRhIRl5YNzPkLCGcHzs_oRFoz0KSzGDsJqKNuyfimWTCODBgyggtCveSKzBSguXwPTAcd-Z10Q",
     },
@@ -59,6 +54,7 @@ const fallbackProducts: Product[] = [
         price: 89.0,
         badge: "RARE ORIGIN",
         mb_score: true,
+        category: "steak",
         image_url:
             "https://lh3.googleusercontent.com/aida-public/AB6AXuBWHprhyjQ2lx8q6g55KwSOYw21agSWeKiS-j-zlaLptHU9deSn2wbPWF8g2XifpaIogiXlOW6PEU1JaRYuCkYIwN34JSWyxdEmEMbk3chw_5R4UfSZYva2zC_Z-5XKj06ZWMZGw2OBevoIYrfzUKCmMlR-WbMsr9WRk8sKPu1rrT0bMbNUYLlEldRHL9ERTgPGr4xWF4UtakhqJWWwPhdv3ks6MnG5JgHLPgcAsQ9EAX1puobSE4d4IprnzmlR7DgFZT6IEr792iyt",
     },
@@ -70,6 +66,7 @@ const fallbackProducts: Product[] = [
         price: 145.0,
         badge: "",
         mb_score: true,
+        category: "steak",
         image_url:
             "https://lh3.googleusercontent.com/aida-public/AB6AXuAxaATTMLVvVmY16Y3ExdS2wif3DcfIfbEG_OooLbwAVvVBt28zuRqQcSEMjNhEDA98xAM9fYFCEZjUA-zBmsH_pN7pvBBHgFGIcEF_qYXJWL9O1DmdNg9pPd-BCAPvJUqBhLfyOcPVDAQ9H6SOIg71tfJzDyOK4FkXy6dc2VDl80-38pXqBDQu0AFbA3q8yGsoBxL005Wyi-68vpkLWu4w22gIJBUiXe7LEnJpO9A0q9JhAb48HKDY671b1CZpJm_i4k8nf_7fuDcN",
     },
@@ -81,6 +78,7 @@ const fallbackProducts: Product[] = [
         price: 78.0,
         badge: "",
         mb_score: true,
+        category: "shabu",
         image_url:
             "https://lh3.googleusercontent.com/aida-public/AB6AXuB-d-4Mp4DqOQtgX_Q5siyDg1OFypPGJlLtVZt5Txzrox79bqp0V7RuVR_Wmt_YvIWZ5EOaqhqiQtoTLAy1sP4Ei5TYMCe_LkgxWJRMqmpCPhP3eyOvTYJ0mD_NRuXztF5a_66b4-R_A5NnvCe9owj73xEL8L-JmUr7uzkR54rRqZWNjUY_nUwDgfoQrpISq8XsywXhEXfev_ddY0RNkUF4zMicAfOk_qNyN93eb4k706hO6C_OMEl9bcP-N2fBDPNuS93vfkn4UVeZ",
     },
@@ -92,6 +90,7 @@ const fallbackProducts: Product[] = [
         price: 110.0,
         badge: "45-DAY AGED",
         mb_score: true,
+        category: "steak",
         image_url:
             "https://lh3.googleusercontent.com/aida-public/AB6AXuDjfUNXHYPXBDemM4g0pCR2HlJBrc13IPNIZv5NnppeTu0HPW0-NYsATQUpwcjosCP4wDd27zIND36R3Tra5ohmSGmRaiwfNdxelpY462E-6w4bYaXB0uORMFEbFnLUC1LtkVTorquROwLhCS30fGLGIv2y-Slll0ml3dU0rCOjetK2-xpZQ5Fm7SYWs4IMdCG_BrSXi85GO_jopASUX80tHZ82IEtV23g2VKh-OxPF6PUGQ4Re20W0VMCB5ErLGs2aRyHlMNE60JSn",
     },
@@ -102,10 +101,19 @@ const marblingScores = ["A3 (Moderate)", "A5 (Supreme)", "MB 4-5", "MB 8-9+"]
 const origins = ["Japanese Wagyu", "Australian Black Angus", "USDA Prime"]
 
 export default function ProductsPage() {
+    const { t } = useLanguage()
     const searchParams = useSearchParams()
     const router = useRouter()
     const catParam = searchParams.get("cat") || "all"
     const searchParam = searchParams.get("search") || ""
+
+    const CATEGORIES = [
+        { key: "all", label: t.products.catAll, icon: "grid_view" },
+        { key: "steak", label: t.products.catSteak, icon: "restaurant" },
+        { key: "wagyu", label: t.products.catWagyu, icon: "star" },
+        { key: "bbq", label: t.products.catBBQ, icon: "outdoor_grill" },
+        { key: "shabu", label: t.products.catShabu, icon: "ramen_dining" },
+    ]
 
     const [allProducts, setAllProducts] = useState<Product[]>(fallbackProducts)
     const [activeCategory, setActiveCategory] = useState(catParam)
@@ -166,7 +174,7 @@ export default function ProductsPage() {
             return
         }
         if (!product.id) {
-            setToast("Cannot add product")
+            setToast(t.products.cannotAdd)
             setTimeout(() => setToast(null), 2000)
             return
         }
@@ -185,7 +193,7 @@ export default function ProductsPage() {
                 .eq("id", existing.id)
             if (error) {
                 console.error("Cart update error:", error)
-                setToast("Failed to update cart")
+                setToast(t.products.failedUpdate)
                 setTimeout(() => setToast(null), 2000)
                 return
             }
@@ -195,7 +203,7 @@ export default function ProductsPage() {
                 .insert({ user_id: user.id, product_id: product.id, quantity: 1 })
             if (error) {
                 console.error("Cart insert error:", error)
-                setToast("Failed to add to cart")
+                setToast(t.products.failedAdd)
                 setTimeout(() => setToast(null), 2000)
                 return
             }
@@ -290,7 +298,7 @@ export default function ProductsPage() {
                     </h3>
                     {product.mb_score && (
                         <span className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold whitespace-nowrap ml-2">
-                            MB Score
+                            {t.products.mbScore}
                         </span>
                     )}
                 </div>
@@ -317,7 +325,7 @@ export default function ProductsPage() {
                     <span className="material-icons text-base">
                         shopping_cart
                     </span>
-                    Add to Cart
+                    {t.products.addToCart}
                 </button>
             </div>
         </Link>
@@ -330,12 +338,12 @@ export default function ProductsPage() {
                 {/* Page Header */}
                 <div className="mb-8">
                     <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-                        {searchQuery.trim() ? "Search Results" : "The Prime Collection"}
+                        {searchQuery.trim() ? t.products.searchResultsTitle : t.products.pageTitle}
                     </h1>
                     <p className="text-gray-500 max-w-2xl leading-relaxed">
                         {searchQuery.trim()
-                            ? <>Showing results for &ldquo;<span className="font-semibold text-charcoal">{searchQuery}</span>&rdquo;</>
-                            : "Discover our curated selection of the world's finest beef. Sourced from the most prestigious ranches in Japan, Australia, and the USA. Every cut is hand-selected by our master butchers."
+                            ? <>{t.products.showingResultsFor} &ldquo;<span className="font-semibold text-charcoal">{searchQuery}</span>&rdquo;</>
+                            : t.products.pageDesc
                         }
                     </p>
                 </div>
@@ -350,7 +358,7 @@ export default function ProductsPage() {
                             type="text"
                             value={searchQuery}
                             onChange={(e) => handlePageSearch(e.target.value)}
-                            placeholder="Search by name, origin, or category..."
+                            placeholder={t.products.searchPlaceholder}
                             className="w-full pl-12 pr-12 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
                         />
                         {searchQuery && (
@@ -384,17 +392,17 @@ export default function ProductsPage() {
                 {/* Sort Controls */}
                 <div className="flex items-center justify-between mb-8">
                     <p className="text-sm text-gray-500">
-                        Showing{" "}
+                        {t.products.showing}{" "}
                         <span className="font-bold text-charcoal">
                             {activeCategory === "all"
                                 ? filteredBySearch.length
                                 : filteredBySearch.filter((p) => p.category === activeCategory).length}
                         </span>{" "}
-                        premium cuts
+                        {t.products.premiumCuts}
                     </p>
                     <div className="flex items-center gap-3">
                         <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold hidden sm:inline">
-                            Sort by:
+                            {t.products.sortBy}
                         </span>
                         <select
                             value={sortBy}
@@ -406,8 +414,8 @@ export default function ProductsPage() {
                                 backgroundPosition: "right 10px center",
                             }}
                         >
-                            <option value="highest">Highest Price</option>
-                            <option value="lowest">Lowest Price</option>
+                            <option value="highest">{t.products.highestPrice}</option>
+                            <option value="lowest">{t.products.lowestPrice}</option>
                         </select>
                     </div>
                 </div>
@@ -426,7 +434,7 @@ export default function ProductsPage() {
                                     </div>
                                     <div>
                                         <h2 className="text-xl font-extrabold">{cat.label}</h2>
-                                        <p className="text-xs text-gray-400">{products.length} products</p>
+                                        <p className="text-xs text-gray-400">{products.length} {t.products.productsCount}</p>
                                     </div>
                                     <div className="flex-1 h-px bg-gray-200 ml-4" />
                                 </div>

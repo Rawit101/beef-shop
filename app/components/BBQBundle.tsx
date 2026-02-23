@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { supabase, isSupabaseConfigured } from "../../lib/supabaseClient"
+import { useLanguage } from "../../lib/i18n"
 
 const BBQ_BUNDLE_SLUG = "bbq-lovers-sampler-box"
 
@@ -31,6 +32,7 @@ function useCountdown(targetDate: Date) {
 }
 
 export default function BBQBundle() {
+    const { t } = useLanguage()
     const [deadline] = useState(() => {
         const d = new Date()
         d.setHours(d.getHours() + 12)
@@ -65,7 +67,7 @@ export default function BBQBundle() {
             .maybeSingle()
 
         if (!product) {
-            setToast("Bundle not found. Please try again.")
+            setToast(t.bbqBundle.bundleNotFound)
             setTimeout(() => setToast(null), 2000)
             setAdding(false)
             return
@@ -104,35 +106,33 @@ export default function BBQBundle() {
                     <div className="flex items-center gap-2 text-primary font-bold mb-6">
                         <span className="material-icons">local_fire_department</span>
                         <span className="tracking-[0.3em] uppercase text-xs">
-                            Summer Exclusive
+                            {t.bbqBundle.label}
                         </span>
                     </div>
                     <h2 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
-                        The Ultimate <br />
-                        BBQ Bundle
+                        {t.bbqBundle.titleLine1} <br />
+                        {t.bbqBundle.titleLine2}
                     </h2>
                     <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                        A curated box featuring our top-tier Tomahawk, 4 pieces of Wagyu
-                        patties, and charcoal-ready Short Ribs. Save 20% compared to
-                        individual cuts.
+                        {t.bbqBundle.description}
                     </p>
 
                     {/* Countdown */}
                     <div className="flex items-center gap-4 mb-10">
                         {[
-                            { val: hours, label: "Hours" },
-                            { val: mins, label: "Mins" },
-                            { val: secs, label: "Secs" },
-                        ].map((t) => (
+                            { val: hours, label: t.bbqBundle.hours },
+                            { val: mins, label: t.bbqBundle.mins },
+                            { val: secs, label: t.bbqBundle.secs },
+                        ].map((item) => (
                             <div
-                                key={t.label}
+                                key={item.label}
                                 className="text-center bg-white/5 rounded-xl px-4 py-3 border border-white/10"
                             >
                                 <span className="block text-2xl font-bold text-white">
-                                    {String(t.val).padStart(2, "0")}
+                                    {String(item.val).padStart(2, "0")}
                                 </span>
                                 <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">
-                                    {t.label}
+                                    {item.label}
                                 </span>
                             </div>
                         ))}
@@ -146,10 +146,10 @@ export default function BBQBundle() {
                         {adding ? (
                             <span className="flex items-center gap-2">
                                 <span className="material-icons animate-spin text-lg">autorenew</span>
-                                Adding to Cart...
+                                {t.bbqBundle.adding}
                             </span>
                         ) : (
-                            "Claim Bundle Now — $199"
+                            t.bbqBundle.claimBtn
                         )}
                     </button>
                 </div>

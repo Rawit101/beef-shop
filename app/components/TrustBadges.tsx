@@ -1,19 +1,25 @@
+"use client"
+
+import { useLanguage } from "../../lib/i18n"
+
 export default function TrustBadges() {
+    const { t } = useLanguage()
+
     const badges = [
         {
             icon: "ac_unit",
-            title: "Cold Chain Logistics",
-            desc: "Guaranteed 24h chilled delivery in climate-controlled packaging.",
+            title: t.trustBadges.badge1Title,
+            desc: t.trustBadges.badge1Desc,
         },
         {
             icon: "agriculture",
-            title: "Ethical Farm Sourcing",
-            desc: "100% traceable cuts from farms with high animal welfare standards.",
+            title: t.trustBadges.badge2Title,
+            desc: t.trustBadges.badge2Desc,
         },
         {
             icon: "verified",
-            title: "Butcher Certified",
-            desc: "Hand-cut to order by our master butchers for perfect thickness.",
+            title: t.trustBadges.badge3Title,
+            desc: t.trustBadges.badge3Desc,
         },
     ]
 
@@ -22,7 +28,7 @@ export default function TrustBadges() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {badges.map((badge) => (
-                        <div key={badge.title} className="flex items-center gap-5">
+                        <div key={badge.icon} className="flex items-center gap-5">
                             <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <span className="material-icons text-primary text-3xl">
                                     {badge.icon}
